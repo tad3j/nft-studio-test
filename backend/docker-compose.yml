@@ -85,6 +85,21 @@ services:
     restart: always
     networks:
       - app-network
+  nft_studio_ingress:
+    image: kvin/dstack-ingress@sha256:2cc3bc50d71faa4d313084237b0f5d1d25963024f2484c7a6414aed075883cdd
+    ports:
+      - "443:443"
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DOMAIN=${DOMAIN}
+      - GATEWAY_DOMAIN=${GATEWAY_DOMAIN}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+      - SET_CAA=true
+      - TARGET_ENDPOINT=http://app:80
+    volumes:
+      - /var/run/tappd.sock:/var/run/tappd.sock
+      - cert-data:/etc/letsencrypt
+    restart: unless-stopped
 networks:
   app-network:
     driver: bridge
