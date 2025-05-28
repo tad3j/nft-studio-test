@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { ClaimType } from './values';
+import { ClaimType, defaultSmtpHost } from './values';
 /**
  * Environment object interface.
  */
@@ -82,7 +82,7 @@ export const env: IEnv = {
   /**
    * HTTP server hostname and port.
    */
-  API_HOST: process.env['API_HOST'] || '0.0.0.0',
+  API_HOST: process.env['API_HOST'] || '127.0.0.1',
   API_PORT: process.env['API_PORT']
     ? parseInt(`${process.env['API_PORT']}`)
     : 3001,
@@ -122,7 +122,7 @@ export const env: IEnv = {
     : 500,
 
   /** SMTP */
-  SMTP_HOST: process.env['SMTP_HOST'] || 'nft_studio_mail',
+  SMTP_HOST: process.env['SMTP_HOST'] || defaultSmtpHost,
   SMTP_PORT: process.env['SMTP_PORT']
     ? parseInt(`${process.env['SMTP_PORT']}`)
     : 25,
@@ -166,5 +166,7 @@ export const env: IEnv = {
   CLAIM_START: process.env['CLAIM_START']
     ? parseInt(`${process.env['CLAIM_START']}`)
     : undefined,
-  CLAIM_TYPE: ClaimType.AIRDROP,
+  CLAIM_TYPE: process.env['CLAIM_TYPE']
+    ? parseInt(process.env['CLAIM_TYPE'])
+    : ClaimType.AIRDROP,
 };

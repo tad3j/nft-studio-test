@@ -25,6 +25,7 @@ import { inject as injectReserveDrop } from './routes/reserve-drop';
 import { inject as injectSendClaimMail } from './routes/send-claim-mail';
 import { inject as injectClaimAdmin } from './routes/claim-admin';
 import { inject as injectDeleteUser } from './routes/delete-user';
+import { inject as injectGetConfig } from './routes/get-config';
 
 export interface Request extends express.Request {
   context: Context;
@@ -62,8 +63,6 @@ export class HttpServer {
 
   /**
    * Class constructor.
-   * @param env Environment variables.
-   * @param mongo Already connected mongodb.
    */
   public constructor(config: HttpServerConfig) {
     this.config = config;
@@ -94,6 +93,7 @@ export class HttpServer {
     injectSendClaimMail(this.app);
     injectClaimAdmin(this.app);
     injectDeleteUser(this.app);
+    injectGetConfig(this.app);
 
     // ERROR HANDLER
     injectErrors(this.app);
@@ -102,8 +102,6 @@ export class HttpServer {
 
   /**
    * Starts the server.
-   * @param host Server hostname.
-   * @param port Server listening port.
    */
   public async listen() {
     await new Promise((res) => {
